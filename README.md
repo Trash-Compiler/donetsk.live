@@ -1,2 +1,2 @@
 # donetsk.live
-Feel Free to Edit at anytime
+Simple Announcement Website
