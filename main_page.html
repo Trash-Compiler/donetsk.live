@@ -27,19 +27,13 @@
             100% { background-position: 0% 50%; }
         }
 
-        .message {
+        .quote {
             font-size: 36px;
             font-weight: bold;
             line-height: 1.5;
             max-width: 600px;
             transition: opacity 2s ease;
-        }
-
-        .subtext {
-            font-size: 20px;
-            font-style: italic;
-            margin-top: 20px;
-            color: #cccccc;
+            opacity: 0;
         }
 
         .goodbye-message {
@@ -56,43 +50,64 @@
         }
     </style>
     <script>
-        setTimeout(function(){
-            // Fade out the main message
-            document.querySelector('.message').style.opacity = '0';
-        }, 8000); // Fade out after 8 seconds
+        let quotes = [
+            "Donetsk was an amazing project.",
+            "We built something great in Donetsk.",
+            "Remember the times in Donetsk?",
+            "Donetsk will always be remembered.",
+            "Farewell, Donetsk!"
+        ];
 
-        setTimeout(function(){
-            // Show and fade in the goodbye message
-            var goodbyeMessage = document.querySelector('.goodbye-message');
-            goodbyeMessage.style.display = 'block';
-            setTimeout(function(){
-                goodbyeMessage.style.opacity = '1';
-            }, 10);
-        }, 8000); // Fade in "Goodbye" after 8 seconds
+        let currentIndex = 0;
+        let interval = 8000; // 8 seconds per quote
 
-        setTimeout(function(){
-            window.location.href = "https://banabyte.com";
-        }, 10000); // Redirect after 10 seconds
+        function showNextQuote() {
+            if (currentIndex < quotes.length) {
+                let quoteElement = document.querySelector('.quote');
+                quoteElement.style.opacity = '0'; // Fade out
 
-        // Play the audio when the page loads
+                setTimeout(function() {
+                    quoteElement.innerHTML = quotes[currentIndex];
+                    quoteElement.style.opacity = '1'; // Fade in
+                    currentIndex++;
+                }, 2000); // Wait for the fade-out transition
+            } else {
+                // Show the final goodbye message
+                document.querySelector('.quote').style.opacity = '0'; // Fade out the last quote
+                setTimeout(function() {
+                    var goodbyeMessage = document.querySelector('.goodbye-message');
+                    goodbyeMessage.style.display = 'block';
+                    setTimeout(function(){
+                        goodbyeMessage.style.opacity = '1'; // Fade in "Goodbye"
+                    }, 10);
+                    
+                    // Redirect to banabyte.com after the goodbye message
+                    setTimeout(function(){
+                        window.location.href = "https://banabyte.com";
+                    }, 5000); // Redirect after 5 seconds
+                }, 2000); // Wait for the fade-out transition
+            }
+        }
+
         window.onload = function() {
-            var audio = document.getElementById('dramatic-audio');
-            audio.play().catch(function(error) {
-                console.log("Autoplay prevented: ", error);
-            });
+            // Start playing the music
+            var audio = document.getElementById('background-music');
+            audio.play();
+
+            // Show the first quote
+            showNextQuote();
+            
+            // Cycle through the quotes
+            setInterval(showNextQuote, interval);
         }
     </script>
 </head>
 <body>
-    <div class="message">
-        This Website Had a Good Run, But All Things Come to an End.<br>
-        We're Moving On.<br>
-        <span class="subtext">It was fun while it lasted, wasn't it? But hey, you're free now. <i class="fas fa-smile smile-icon"></i></span>
-    </div>
+    <div class="quote"></div>
     <div class="goodbye-message">
         Goodbye <i class="fas fa-smile"></i> <i class="fas fa-hand-wave"></i>
     </div>
-    <!-- Dramatic audio -->
-    <audio id="dramatic-audio" src="https://musopen.org/file/music/3033/beethoven-symphony-no5-c-minor-op67-1-allegro-con-brio.mp3" type="audio/mpeg"></audio>
+    <!-- Background music -->
+    <audio id="background-music" src="yus.mp3" type="audio/mpeg"></audio>
 </body>
 </html>
