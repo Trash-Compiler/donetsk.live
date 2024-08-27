@@ -1,2 +1,2 @@
-# donetsk.live
-Simple Announcement Website
+# Donetsk.live
+Long live Donetsk
