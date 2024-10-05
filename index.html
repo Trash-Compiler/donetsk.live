@@ -3,14 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
+    <meta name="description" content="Saying goodbye to Project Donetsk, the revival of Verdansk, shut down by Activision.">
+    <meta name="keywords" content="Project Donetsk, Verdansk, Warzone 2019, Modern Warfare 2019, Goodbye Project Donetsk, Activision cease and desist">
+    <title>Goodbye Project Donetsk - Farewell</title>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Fullscreen video background */
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(0.5); /* Dim the video for better text readability */
+            display: none; /* Initially hidden */
+        }
+
+        .quote, .goodbye-message {
+            font-size: 26px;
+            font-weight: normal;
+            margin: 20px 0;
+            text-shadow: 2px 2px 8px #000;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            z-index: 10;
+        }
+
+        .goodbye-message {
+            font-size: 30px;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 2px 2px 8px #ff4500;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            color: #fff;
+            flex-direction: column;
+        }
+
+        .overlay button {
+            background-color: #ffcc00;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            color: #000;
+            transition: background-color 0.3s ease;
+        }
+
+        .overlay button:hover {
+            background-color: #e6b800;
+        }
+
+        .quote-icon {
+            margin-right: 10px;
+        }
+
+        audio {
+            display: none;
+        }
+    </style>
     <script>
+        let quotes = [
+            "<i class='fas fa-quote-left quote-icon'></i> Verdansk was a legend, and Project Donetsk was our hope to see it again.",
+            "<i class='fas fa-quote-left quote-icon'></i> We tried to bring Verdansk back through Project Donetsk, but sometimes hope isn’t enough.",
+            "<i class='fas fa-quote-left quote-icon'></i> There was a time we believed we could relive the memories. Project Donetsk was that dream.",
+            "<i class='fas fa-quote-left quote-icon'></i> Project Donetsk was more than just a project. It was our collective hope to bring back something we loved.",
+            "<i class='fas fa-quote-left quote-icon'></i> But here we are, saying goodbye to what could have been.",
+            "<i class='fas fa-quote-left quote-icon'></i> Project Donetsk is over, but the memories of Verdansk will live on.",
+            "<i class='fas fa-quote-left quote-icon'></i> Farewell to the dream of Verdansk’s revival. You will always have a place in our hearts.",
+            "<i class='fas fa-quote-left quote-icon'></i> Goodbye, Project Donetsk. You gave us hope, and for that, we’ll never forget."
+        ];
+
+        function startAudio() {
+            var audio = document.getElementById('background-music');
+            var video = document.getElementById('background-video');
+
+            audio.play();
+            video.style.display = 'block';  // Show and play video when play is clicked
+            video.play();
+
+            // Start quotes with intervals
+            showQuote(0);
+            setTimeout(function() { showQuote(1); }, 7000);
+            setTimeout(function() { showQuote(2); }, 14000);
+            setTimeout(function() { showQuote(3); }, 21000);
+            setTimeout(function() { showQuote(4); }, 28000);
+            setTimeout(function() { showQuote(5); }, 35000);
+            setTimeout(function() { showQuote(6); }, 42000);
+            setTimeout(function() { showQuote(7); }, 49000);
+
+            // Final goodbye message and extended duration before redirect
+            setTimeout(function() {
+                document.querySelector('.quote').style.display = 'none';
+                document.querySelector('.goodbye-message').style.opacity = '1';
+                setTimeout(function() {
+                    window.location.href = "https://discord.banabyte.com";
+                }, 8000);  // Display the goodbye message for a longer 8 seconds
+            }, 56000);
+        }
+
+        function showQuote(index) {
+            let quoteElement = document.querySelector('.quote');
+            if (index < quotes.length) {
+                quoteElement.style.opacity = '0'; // Fade out
+                setTimeout(function() {
+                    quoteElement.innerHTML = quotes[index];
+                    quoteElement.style.opacity = '1'; // Fade in
+                }, 2000);
+            }
+        }
+
+        function enableAudio() {
+            document.querySelector('.overlay').style.display = 'none';
+            startAudio();
+        }
+
         window.onload = function() {
-            window.location.href = "main_page.html"; // Redirect to the main page
+            // Wait for user to enable audio
         }
     </script>
 </head>
 <body>
-    <p>Redirecting, please wait...</p>
+    <div class="overlay">
+        <h2>Enable audio and video to experience Project Donetsk one last time</h2>
+        <button onclick="enableAudio()">Play</button>
+    </div>
+
+    <!-- Fullscreen video background -->
+    <video id="background-video" muted loop>
+        <source src="background.mp4" type="video/mp4">
+    </video>
+
+    <div class="quote"></div>
+    <div class="goodbye-message">
+        Goodbye, Project Donetsk. You gave us hope, and for that, we’ll never forget.
+    </div>
+    <!-- Background music -->
+    <audio id="background-music" src="Mybrain.mp3" type="audio/mpeg"></audio>
 </body>
 </html>
