@@ -20,6 +20,7 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            background-color: black;
         }
 
         /* Fullscreen video background */
@@ -33,6 +34,8 @@
             object-fit: cover;
             filter: brightness(0.5); /* Dim the video for better text readability */
             display: none; /* Initially hidden */
+            opacity: 1;
+            transition: opacity 5s ease; /* Smooth fade out */
         }
 
         .quote, .goodbye-message {
@@ -62,7 +65,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 10;
+            z-index: 30; /* Set higher z-index to ensure it's above other elements */
             color: #fff;
             flex-direction: column;
         }
@@ -88,6 +91,44 @@
         audio {
             display: none;
         }
+
+        /* Goodbye wave animation */
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            10% { transform: rotate(14deg); }
+            20% { transform: rotate(-8deg); }
+            30% { transform: rotate(14deg); }
+            40% { transform: rotate(-4deg); }
+            50% { transform: rotate(10deg); }
+            60% { transform: rotate(0deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        .wave {
+            font-size: 40px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: wave 2s infinite;
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+            z-index: 25; /* Ensure it's visible over other elements */
+        }
+
+        /* Fade to black */
+        .fade-to-black {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 20;
+            opacity: 0;
+            display: none; /* Hidden initially */
+            transition: opacity 5s ease-in-out;
+        }
     </style>
     <script>
         let quotes = [
@@ -102,12 +143,18 @@
         ];
 
         function startAudio() {
+            console.log("Play button clicked! Starting audio and video..."); // Debugging log
+
             var audio = document.getElementById('background-music');
             var video = document.getElementById('background-video');
 
-            audio.play();
-            video.style.display = 'block';  // Show and play video when play is clicked
-            video.play();
+            if (audio && video) {
+                audio.play();
+                video.style.display = 'block';  // Show and play video when play is clicked
+                video.play();
+            } else {
+                console.error("Audio or video element is missing!"); // Debugging log for missing elements
+            }
 
             // Start quotes with intervals
             showQuote(0);
@@ -119,13 +166,32 @@
             setTimeout(function() { showQuote(6); }, 42000);
             setTimeout(function() { showQuote(7); }, 49000);
 
-            // Final goodbye message and extended duration before redirect
+            // Final goodbye message, video fade-out, and screen fade-to-black
             setTimeout(function() {
                 document.querySelector('.quote').style.display = 'none';
                 document.querySelector('.goodbye-message').style.opacity = '1';
+                video.style.opacity = '0'; // Start fading the video
+
+                // Fade the audio out over 5 seconds
+                let audioFadeOut = setInterval(function() {
+                    if (audio.volume > 0.1) {
+                        audio.volume -= 0.1;
+                    } else {
+                        clearInterval(audioFadeOut);
+                        audio.volume = 0;
+                    }
+                }, 500);
+
+                setTimeout(function() {
+                    let fadeToBlack = document.querySelector('.fade-to-black');
+                    fadeToBlack.style.display = 'block'; // Make the fade to black visible
+                    fadeToBlack.style.opacity = '1'; // Fade to black
+                    document.querySelector('.wave').style.opacity = '1';  // Show goodbye wave
+                }, 6000);
+
                 setTimeout(function() {
                     window.location.href = "https://discord.banabyte.com";
-                }, 8000);  // Display the goodbye message for a longer 8 seconds
+                }, 10000);  // 10-second transition to redirect
             }, 56000);
         }
 
@@ -141,12 +207,13 @@
         }
 
         function enableAudio() {
+            console.log("Enable button clicked!"); // Debugging log
             document.querySelector('.overlay').style.display = 'none';
             startAudio();
         }
 
         window.onload = function() {
-            // Wait for user to enable audio
+            console.log("Page loaded, waiting for user to click play.");
         }
     </script>
 </head>
@@ -165,6 +232,13 @@
     <div class="goodbye-message">
         Goodbye, Project Donetsk. You gave us hope, and for that, we’ll never forget.
     </div>
+
+    <!-- Fade to black screen -->
+    <div class="fade-to-black"></div>
+
+    <!-- Waving goodbye -->
+    <div class="wave">👋 Goodbye</div>
+
     <!-- Background music -->
     <audio id="background-music" src="Mybrain.mp3" type="audio/mpeg"></audio>
 </body>
