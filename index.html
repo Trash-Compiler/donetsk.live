@@ -39,17 +39,18 @@
         }
 
         .quote, .goodbye-message {
-            font-size: 26px;
+            font-size: 1.6rem;
             font-weight: normal;
             margin: 20px 0;
             text-shadow: 2px 2px 8px #000;
             opacity: 0;
             transition: opacity 2s ease-in-out;
             z-index: 10;
+            text-align: center;
         }
 
         .goodbye-message {
-            font-size: 30px;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #ffffff;
             text-shadow: 2px 2px 8px #ff4500;
@@ -68,13 +69,19 @@
             z-index: 30; /* Set higher z-index to ensure it's above other elements */
             color: #fff;
             flex-direction: column;
+            text-align: center;
+        }
+
+        .overlay h2 {
+            font-size: 1.5rem; /* Responsive for smaller screens */
+            margin-bottom: 20px;
         }
 
         .overlay button {
             background-color: #ffcc00;
             border: none;
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 15px 30px;
+            font-size: 1.2rem;
             cursor: pointer;
             color: #000;
             transition: background-color 0.3s ease;
@@ -128,6 +135,26 @@
             opacity: 0;
             display: none; /* Hidden initially */
             transition: opacity 5s ease-in-out;
+        }
+
+        /* Responsive Design for Smaller Screens */
+        @media (max-width: 768px) {
+            .quote, .goodbye-message {
+                font-size: 1.2rem;
+            }
+
+            .overlay h2 {
+                font-size: 1.2rem;
+            }
+
+            .overlay button {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+
+            .wave {
+                font-size: 1.5rem;
+            }
         }
     </style>
     <script>
